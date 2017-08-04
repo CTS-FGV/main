@@ -1,6 +1,3 @@
-Translate
-Turn off instant translation
-2644/5000
 ## How to Automate Push to GitHub via SSH and Airflow
 
 How to create repo that gives automatic push on GitHub for Ubuntu
@@ -25,6 +22,7 @@ Date
 
 ```
 git init
+git remote add origin git@github.com: [user_name / group_name] / [repository_name] .git
 git remote set-url origin git@github.com: [user_name / group_name] / [repository_name] .git
 ```
 
