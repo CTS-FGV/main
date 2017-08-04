@@ -15,7 +15,9 @@ _[nome_do_projeto]_proj_[tipo_do_repositório].
 ```
 Exemplo: congresso_proj_redes
 ```
-- Submeta nesse repositório os tutoriais e guidelines via pull request. Se não sabe como fazer um pull request, aprenda [?]
+- Submeta nesse repositório os tutoriais e guidelines via *pull request*. Se não sabe como fazer um pull request, aprenda [?]
+
+- Os *issues* do geral tem que ter relação com administração de código, proposta de tutoriais e contrução da infraestrutura de dados do CTS.
 
 ### Tutoriais
 - [Como automatizar o push para o GitHub via SSH e Airflow](https://github.com/CTS-FGV/geral/blob/master/tutoriais.md)
