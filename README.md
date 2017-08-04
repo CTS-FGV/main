@@ -1,37 +1,36 @@
 # Geral
 
-Aqui estarão listadas algumas regras de convívio seguro com o código.
+Here you will find some rules of safe living with the code.
 
-Também, alguns tutoriais que podem vir a ser úteis e fazem parte do dia-a-dia do CTS.
+Also, some tutorials that may come in handy and are part of CTS day-to-day.
 
-### Guidelines Básicas
+### Basic Guidelines
 
-#### Nomenclatura dos repositórios
+#### Naming Repositories
 
-- Adicione a raiz do seu ambiente de trabalho. O nome a ser escolhido é _[nome_do_projeto]_[tipo_do_repositório]. 
+- Add the root of your desktop. The name to be chosen is _ [project_name] _ [repository_type].
 ```
-Exemplo: congresso_analise, corrupcao_captura
+Example: congresso_analise, corrupcao_captura
 ```
-- Se achar que um dos subprojetos tem muita importância e pode ser um repositório por si próprio, adicione com o nome: 
-_[nome_do_projeto]_proj_[tipo_do_repositório].
+- If you think one of the subprojects is very important and can be a repository by itself, add with the name:
+[Project_name] __proj__ [repository_type].
 ```
-Exemplo: congresso_proj_redes
-```
-- Se for um repositório relacionado à infraestrutura use infra_[nome_explicativo]
-```
-Exemplo: infra_airflow
+Example: congresso_proj_redes
 ```
 
-#### Como adicionar tutoriais e guidelines
+- If it is an infrastructure-related repository use infra_[explicative_name]
+```
+Example: infra_airflow
+```
 
-- Submeta nesse repositório os tutoriais e guidelines via *pull request*. Se não sabe como fazer um pull request, aprenda [?]
+#### Adding tutorials and guidelines
 
-#### Dos Issues
-- Os *issues* do geral tem que ter relação com administração de código, proposta de tutoriais e contrução da infraestrutura de dados do CTS.
+- Submit the tutorials and guidelines in this repository via * pull request *. If you do not know how to make a pull request, learn [?]
 
-
-### Tutoriais
-
-- [Como automatizar o push para o GitHub via SSH e Airflow](https://github.com/JoaoCarabetta/geral/blob/master/tutoriais/Como%20automatizar%20o%20GitHub%20via%20SSH.md)
+#### About the Issues
+- The issues on this repo must be related to code administration, tutorial proposal, and CTS data infrastructure building.
 
 
+### Tutorials
+
+- [How to automate push for GitHub via SSH and Airflow] (https://github.com/JoaoCarabetta/geral/blob/master/tutorials/Como%20automatize%20o%20GitHub%20via%20SSH.md)
