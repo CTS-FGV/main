@@ -47,15 +47,15 @@ If there is a connection, go to step 10.
 
 8. Add the private key to `id_rsa`:
 
-`ssh-add ~ / .ssh / id_rsa`
+`ssh-add ~ /.ssh/id_rsa`
 
 9. Link your github account with ssh via public key. First copy the key using,your favorite text editor, (hint: use vim). Then open your GitHub settings, go to _SSH and GPG keys_ and enter a new SSH key.
 
-`Vim ~ / .ssh / id_rsa.pub`
+`Vim ~ /.ssh/id_rsa.pub`
 
 10. Now just do the default git add, commit, push that everything must happen automatically.
 
-11. Now we have to configure Airflow. Go to server 227 and enter in the dag responsible for the auto_git at `/ home / Admin / airflow / dags / auto_git.py`. Add in the file a new task in the DAG with the same name of the repository. Point it to the right `path` and check if it is the same as the bash file of the file in question. Do not forget to place the process at the end of the airflow chain. A new process should look like this:
+11. Now we have to configure Airflow. Go to server 227 and enter in the dag responsible for the auto_git at `/home/Admin/airflow/dags/auto_git.py`. Add in the file a new task in the DAG with the same name of the repository. Point it to the right `path` and check if it is the same as the bash file of the file in question. Do not forget to place the process at the end of the airflow chain. A new process should look like this:
 
 ```
 path = [path_to_folder]
