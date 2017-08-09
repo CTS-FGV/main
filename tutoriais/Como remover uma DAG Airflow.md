@@ -11,7 +11,7 @@ Quando o Airflow reconhece uma nova DAG através de um arquivo na pasta `dags/`,
 # Solução
 Assim, para remover a DAG, basta remover todos os seus registros do banco de dados. Considera-se a partir daqui que o banco de dados utilizado é o sqlite3, com execução sequencial.
 
-Para exemplificar, suponha que se quer remover a dag identificada por `"dag_test"` !![001](https://github.com/CTS-FGV/geral/img/remover_dag_001.png).
+Para exemplificar, suponha que se quer remover a dag identificada por `"dag_test"` !![001](https://github.com/CTS-FGV/geral/blob/master/tutoriais/img/remover_dag_001.png).
 
 > **Observação**
 > Certifique-se de se referir corretamente à dag, através do `dag_id`. É justamento o nome que aparece na web GUI.
