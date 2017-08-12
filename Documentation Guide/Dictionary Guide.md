@@ -14,32 +14,24 @@ The main rule is to be saved as a csv or a json.
 -----------
 ### Rules you have to follow
 
-The dictionary need to have a key named as **"id"**.
-
-> **id Rules:**
+The dictionary need to have a key named as **"id"**,  and this key need to follow these rules:
 
 > - Need to be a **unique** number per variable_name;
 > - Need to appear **every line** you have a variable_name.
 
-The dictionary need to have a key named as **"variable_name"**.
-
-> **variable_name Rules:**
+The dictionary need to have a key named as **"variable_name"**, and this key need to follow these rules:
 
 > - Need to be **equal** to the variable_name of your database;
 > - Contain all of your database variables.
 
-The dictionary need to have a key named as **"variable_description"**.
-
-> **variable_description Rules:**
+The dictionary need to have a key named as **"variable_description"**, and this key need to follow these rules:
 
 > - Has to be a string who contain the **best explanation** about your variable,
 > - Need to appear **every line** you have a variable_name.
 
-The dictionary need to have a key named as **"variable_type"**
+The dictionary need to have a key named as **"variable_type"**, and this key need to follow these rules:
 
-> **variable_type Rules:**
-
-> - Has to be a string who contain:
+>- Has to be a string who contain:
  - discrete, if your variable has only integer;
  - continuous, if your variable has  fractionals values;
  - categorical, If your variable has categoricals values;;
@@ -47,17 +39,13 @@ The dictionary need to have a key named as **"variable_type"**
  - datatime, if your variable has a data or time.
 > - Need to appear **every line** you have a variable_name.
 
-The dictionary need to have a key named as "categorical_code"
-
-> **categorical_code Rules:**
+The dictionary need to have a key named as **"categorical_code"** , and this key need to follow these rules:
 
 >- Must be empty if your variable is not categorical;
 >- You need to create a new line for every category;
 >- Need to contain the code or name of the category. 
 
-The dictionary need to have a key named as "categorical_description"
-
-> **categorical_description Rules:**
+The dictionary need to have a key named as **"categorical_description"**, and this key need to follow these rules:
 
 >- Must be empty if is not categorical;
 >- There must be one per categorical_code;
