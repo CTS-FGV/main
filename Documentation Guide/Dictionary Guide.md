@@ -31,13 +31,13 @@ The dictionary need to have a key named as **"variable_description"**, and this 
 
 The dictionary need to have a key named as **"variable_type"**, and this key need to follow these rules:
 
->- Has to be a string who contain:
- - discrete, if your variable has only integer;
- - continuous, if your variable has  fractionals values;
- - categorical, If your variable has categoricals values;;
- - text, if your variable has texts;
- - datatime, if your variable has a data or time.
 > - Need to appear **every line** you have a variable_name.
+>- Has to be a string who contain:
+>>- discrete, if your variable has only integer;
+>>- continuous, if your variable has  fractionals values;
+>>- categorical, If your variable has categoricals values;
+>>- text, if your variable has texts;
+>>- datatime, if your variable has a data or time.
 
 The dictionary need to have a key named as **"categorical_code"** , and this key need to follow these rules:
 
