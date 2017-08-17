@@ -1,4 +1,4 @@
-# Geral
+# Main
 
 Here you will find some rules of safe living with the code.
 
