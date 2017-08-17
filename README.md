@@ -30,6 +30,8 @@ Example: infra_airflow
 #### About the Issues
 - The issues on this repo must be related to code administration, tutorial proposal, and CTS data infrastructure building.
 
+#### Utils.py
+- This utils.py in this repo is know shared and daily updated across all projects. If you want to change it, please do it via pull request.
 
 ### Tutorials
 
