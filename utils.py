@@ -1,3 +1,4 @@
+import json
 import requests
 import copy
 import collections
@@ -5,7 +6,96 @@ import psycopg2
 import yaml
 import datetime
 import time
-import pandas as pd
+import hashlib
+
+
+def convert_str_date(date, current_pattern, output_pattern):
+    """
+    Convert string date format from one pattern to another
+    :param date: str:: date string
+    :param current_pattern:  str:: current date pattern
+    :param output_pattern:  str:: output date pattern
+    :return: str:: output date
+    """
+    assert isinstance(date, str)
+    assert isinstance(current_pattern, str)
+    assert isinstance(output_pattern, str)
+
+    dt = datetime.datetime.strptime(date, current_pattern).date()
+
+    dt = dt.strftime(output_pattern)
+    return dt
+
+
+def daterange(start_date, end_date, convert=False, pattern=None):
+    """
+    Generate a range of dates between start_date and end_date
+
+    :type convert: bool
+    :param convert: bool
+
+    if convert:
+        :param start_date: str
+        :param end_date: str
+        :param pattern: str -> date pattern that was organized in string. eg: '%d-%m-%Y'
+    else:
+        :param start_date: datetime object
+        :param end_date: datetime object
+
+    :return: list -> list of datetime objects
+    """
+    if convert:
+        start_date = datetime.datetime.strptime(start_date, pattern)
+        end_date = datetime.datetime.strptime(end_date, pattern)
+
+    day = start_date
+    days_delta = (end_date - start_date).days
+    for i in range(days_delta + 1):
+        yield day
+        day += datetime.timedelta(1)
+
+
+def try_get_data(data_source, key, typ=None):
+    try:
+        value = data_source[key]
+        if typ == 'int':
+            value = int(value)
+        elif typ == 'date':
+            value = datetime.datetime.strptime(value, "%Y-%m-%d").date()
+        elif typ == 'time':
+            value = datetime.datetime.strptime(value, "%H:%M").time()
+
+    except (KeyError, ValueError):
+        value = None
+
+    return value
+
+
+def generate_hash(*args):
+    """
+    Generates a md5 hash value with a custom key, based in *args.
+    :return:
+    """
+    key = bytes(' '.join(args), 'utf_8')
+    hashh = hashlib.md5()
+    hashh.update(key)
+    return hashh.hexdigest()
+
+
+def get_json(url):
+    """
+    Require a json url and convert in dict
+    :param url: str | json url
+    :return: dict | json
+    """
+    headers = {
+        'accept': "application/json",
+        'cache-control': "no-cache",
+        'postman-token': "cce2e0c1-c598-842b-f15f-a1fe8b3e31e2"
+    }
+
+    response = requests.request("GET", url, headers=headers)
+    return json.loads(response.text)
 
 
 def slack_notify_dag_error(context):
@@ -24,11 +114,12 @@ def slack_notify_dag_error(context):
 
     hora = context['ts'][11:]
 
-    link= "http://172.16.4.227:8080/admin/airflow/log?task_id={}&dag_id={}&execution_date={}".format(task_id,dag_id,context['ts'])
+    link = "http://172.16.4.227:8080/admin/airflow/log?task_id={}&dag_id={}&execution_date={}".format(
+        task_id, dag_id, context['ts'])
 
-    mensagem = "DAG_ID: {} \n TASK_ID: {} \n DATA: {} \n HORA: {}".format(dag_id,task_id,dia,hora)
+    mensagem = "DAG_ID: {} \n TASK_ID: {} \n DATA: {} \n HORA: {}".format(dag_id, task_id, dia, hora)
 
-    data = {"attachments":[
+    data = {"attachments": [
                 {"fallback": "Deu Erro! Fale com @alifersales",
                  "title": "Erro ao executar DAG",
                  "title_link": link,
@@ -41,7 +132,9 @@ def slack_notify_dag_error(context):
 
     headers = {'Content-type': 'application/json'}
 
-    requests.post('https://hooks.slack.com/services/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', headers=headers, data=data)
+    requests.post('https://hooks.slack.com/services/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',
+                  headers=headers, data=data)
+
 
 def _strip_all(dic):
     """
@@ -58,6 +151,7 @@ def _strip_all(dic):
             dic[k] = v
 
     return dic
+
 
 def _get_values(full_dic, all_keys, skeleton):
     """
@@ -81,8 +175,7 @@ def _get_values(full_dic, all_keys, skeleton):
             except KeyError:
                 pass
 
-
-        if isinstance(tree_dic, list): # caso que value do dict é lista
+        if isinstance(tree_dic, list):  # caso que value do dict é lista
             tree_dic = tree_dic[0]
 
         # if it exists, add values to dic
@@ -97,82 +190,14 @@ def _get_values(full_dic, all_keys, skeleton):
     return skeleton
 
 
-"""
-METHODS TO GENERATE THE SKELETON
-"""
-def get_value_on_dict(dic, tup):
-    """
-    Get a value in a dict using a tuple with the path
-    :param dic: dictionary
-    :param tup: tuple with ordered keys
-    :return: value that the tuple is pointing to
-    """
-    d = dic
-    for t in tup:
-        if isinstance(d, list):
-            d = d[0]
-        d = d[t]
-    return d
-
-
-
-def iter_paths(tree, parent_path=()):
-    """
-    Get a dict map
-    :param tree: dictionry
-    :param parent_path:
-    :return: Yelds the a list of tuples of all branches of a dict
-    """
-    for path, node in tree.items():
-        current_path = parent_path + (path,)
-        if isinstance(node, collections.Mapping):
-             for inner_path in iter_paths(node, current_path):
-                yield inner_path
-        elif isinstance(node, list):
-            for n in node:
-                for inner_path in iter_paths(n, current_path):
-                    yield inner_path
-        else:
-            yield current_path
-
-def infer_type(value):
-    """
-    Infer the sql type of a python type. NOT IN USE
-    :param value: a value
-    :return: str :: SQL type
-    """
-    try:
-        int(value)
-        return 'TEXT'
-    except:
-        return 'TEXT'
-
-
-def generate_skeleton(tree):
-    """
-    Generate skeleton to sql
-    :param tree:
-    :return:
-    """
-    skeleton = []
-    for elem in tree:
-        elem = elem[-3:]
-        try:
-            elem = (elem[0] + '_' + elem[1], elem[2])
-        except IndexError:
-            pass
-
-        skeleton.append(elem)
-
-    skeleton.append(('datacaptura', 'TIMESTAMP'))
-    skeleton.append(('numerocaptura', 'INT  '))
-
-    return skeleton
-
 def connect_psycopg2():
+    """
+     Create psycopg2 connection with PostgreSQL database
+     :return: psycopg2 connection
+     """
+    server = yaml.load(open('config.yaml', 'r'))
 
-    with open('./config_server.yaml', 'r') as f:
-        server = yaml.load(f)
+    server = server['servers'][229]
 
     host = server['host']
     database = server['database']
@@ -184,9 +209,16 @@ def connect_psycopg2():
         user=user, password=password)
     return conn
 
+
 def connect_sqlalchemy():
-    with open('/cron-jobs/captura/cn-database/cn_database/config_server.yaml', 'r') as f:
-        server = yaml.load(f)
+    """
+    Create SQLalchemy connection with PostgreSQL database
+    :return: SQLalchemy connection
+    """
+
+    server = yaml.load(open('config.yaml', 'r'))
+
+    server = server['servers'][229]
 
     host = server['host']
     database = server['database']
@@ -198,21 +230,6 @@ def connect_sqlalchemy():
     url = url.format(user, password, host, database)
     return create_engine(url)
 
-def logging(script, cursor, nextcapnum, detalhes, log_table, quantidade=False):
-
-
-    st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-
-
-    if quantidade:
-        cursor.execute(
-            "INSERT INTO {} (capnum, script, datahora, detalhes, quantidade) "
-            "VALUES ({}, '{}', '{}', '{}', '{}')".format(log_table, nextcapnum, script, st, detalhes, int(quantidade)))
-    else:
-        cursor.execute(
-            "INSERT INTO {} (capnum, script, datahora, detalhes) "
-            "VALUES ({}, '{}', '{}', '{}')".format(log_table, nextcapnum, script, st, detalhes))
 
 if __name__ == '__main__':
     pass
-
