@@ -7,6 +7,8 @@ import yaml
 import datetime
 import time
 import hashlib
+import os
+
 
 
 def convert_str_date(date, current_pattern, output_pattern):
@@ -215,11 +217,12 @@ def connect_sqlalchemy():
     Create SQLalchemy connection with PostgreSQL database
     :return: SQLalchemy connection
     """
-
-    server = yaml.load(open('config.yaml', 'r'))
-
+    
+    path = os.path.dirname(os.path.abspath(__file__))
+    server = yaml.load(open(path + '/config.yaml', 'r'))
+    
     server = server['servers'][229]
-
+    
     host = server['host']
     database = server['database']
     user = server['user']
