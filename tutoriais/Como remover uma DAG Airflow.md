@@ -1,3 +1,5 @@
+> *OBS*: O tutorial abaixo deve ser atualizado para a exclusão de dags que estejam armazenadas num executor local (no nosso caso, Postgres)
+
 # Introdução
 Infelizmente, o processo de remoção de uma DAG não é tão simples quanto a sua criação. Apenas remover o arquivo (_ou as linhas de código_) da pasta `dags/` não faz com que ela "suma" da web GUI.
 
